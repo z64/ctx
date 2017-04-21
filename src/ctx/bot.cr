@@ -8,24 +8,23 @@ module Ctx
   # The block passed to the wrapped handlers will only be run if all of the supplied Context
   # return true.
   class Bot < Discord::Client
-    macro handle_context_event(event)
-      on_{{event}} do |payload|
-        pass = contexts.map { |ctx| ctx.match? payload }.all?
-        block.call(payload) if pass
-      end
-    end
-
     # Creates methods for handling discord events and calling
     # a proc based on certain lazily evaulated conditions, called Contexts.
     # It defines two overloaded methods, one that takes tuple, and another
     # that takes an array of Context to use where convenient.
     macro context_event(event, type)
       def {{event}}(*contexts : Context({{type}}), &block : {{type}} ->)
-        handle_context_event {{event}}
+        on_{{event}} do |payload|
+          pass = contexts.map { |ctx| ctx.match? payload }.all?
+          block.call(payload) if pass
+        end
       end
 
       def {{event}}(contexts : Array(Context({{type}})), &block : {{type}} ->)
-        handle_context_event {{event}}
+        on_{{event}} do |payload|
+          pass = contexts.map { |ctx| ctx.match? payload }.all?
+          block.call(payload) if pass
+        end
       end
     end
 

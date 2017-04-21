@@ -1,5 +1,6 @@
-require "./ctx/*"
+require "./ctx/context"
+require "./ctx/bot"
+require "./ctx/events"
 
 module Ctx
-  # TODO Put your code here
 end

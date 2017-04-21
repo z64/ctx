@@ -21,11 +21,11 @@ module Ctx
     # that takes an array of Context to use where convenient.
     macro context_event(event, type)
       def {{event}}(*contexts : Context({{type}}), &block : {{type}} ->)
-        handle_context_event event
+        handle_context_event {{event}}
       end
 
       def {{event}}(contexts : Array(Context({{type}})), &block : {{type}} ->)
-        handle_context_event event
+        handle_context_event {{event}}
       end
     end
 

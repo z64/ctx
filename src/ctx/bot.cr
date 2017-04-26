@@ -38,7 +38,7 @@ module Ctx
       conditions << prefix
 
       self.message_create(conditions) do |payload|
-        args = payload.content.delete(name).strip
+        args = payload.content[name.size..-1].strip
         block.call(payload, args)
       end
     end
